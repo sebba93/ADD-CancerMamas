@@ -108,7 +108,83 @@ bEstCuad
 
 
 
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
 
+
+#Tabla de Frecuencias
+contDeg <- xtabs(~deg_malig, data = data)
+contDegTot <- marginSums(contDeg)
+contDegFinal <- addmargins(contDeg,1)
+print(contDegFinal)
+
+#Tabla de Proporciones
+contDegProp <- prop.table(contDeg)
+contDegProp <- addmargins(contDegProp,1)
+print(contDegProp)
+
+#Tabla de Porcentajes
+contDegPor <- round(prop.table(contDeg), 3)*100
+contDegPor <- addmargins(contDegPor)
+print(contDegPor)
+
+#Grafico de Barra
+contDegDF<-as.data.frame(contDeg)
+barraDeg <- ggbarplot(contDegDF,
+                       x = "deg_malig",
+                       y = "Freq",
+                       fill = c("pink","purple","pink"),
+                       title = "Cantidad de Pacientes con grado de tumor ",
+                       xlab = "Grado",
+                       ylab = "Frecuencia")
+
+print(barraDeg)
+
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+
+#FRECUENCIA DEL GRADO DEL TUMOR Y LA EXISTENCIA DE RADIOTERAPIA.
+
+#Tabla de Frecuencias
+contGrado <- xtabs(~ irradiat + deg_malig, data = data)
+contGradoTot <- addmargins(contGrado)
+contGradoTot
+
+
+#Tabla de Porcentajes
+contGradoPor <- round(prop.table(contGrado),7)*100
+contGradoPorTot <- addmargins(contGradoPor)
+contGradoPorTot
+
+
+#Gráficos de Barras
+#Barra Segmentada
+contGradoDF <- as.data.frame(contGrado)
+bSegGrado <- ggplot(contGradoDF, aes(fill = irradiat, y = Freq, x = deg_malig))
+bSegGrado <- bSegGrado + geom_bar(position = "stack", stat = "identity")
+bSegGrado <- bSegGrado + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y radioterapia") + labs(x = "Grado")
+bSegGrado <- bSegGrado + theme_pubr()
+bSegGrado
+
+#Barra Agrupada
+contGradoDF <- as.data.frame(contGrado)
+bAgrGrado <- ggplot(contGradoDF, aes(fill = irradiat, y = Freq, x = deg_malig))
+bAgrGrado <- bAgrGrado + geom_bar(position = "dodge", stat = "identity")
+bAgrGrado <- bAgrGrado + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y Radioterapia") + labs(x = "Grado")
+bAgrGrado <- bAgrGrado + theme_pubr()
+bAgrGrado
+
+#Barra Segmentada Estandarizada
+contGradoDF <- as.data.frame(contGrado)
+bEstGrado <- ggplot(contGradoDF, aes(fill = deg_malig, y = Freq, x = irradiat))
+bEstGrado <- bEstGrado + geom_bar(position = "fill", stat = "identity")
+bEstGrado <- bEstGrado + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y Radioterapia") + labs(x = "Grado")
+bEstGrado <- bEstGrado + theme_pubr()
+bEstGrado
 
 
 
