@@ -99,15 +99,6 @@ bEstCuad <- bEstCuad + labs(y = "Frecuencias") + ggtitle("Frecuencias por Cuadra
 bEstCuad <- bEstCuad + theme_pubr()
 bEstCuad
 
-#------------------------------------------------------------------------#
-#------------------------------------------------------------------------#
-#------------------------------------------------------------------------#
-
-#
-
-
-
-
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
@@ -186,11 +177,114 @@ bEstGrado <- bEstGrado + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grad
 bEstGrado <- bEstGrado + theme_pubr()
 bEstGrado
 
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+
+#Los datos están en string asi que los pasaremos a numérico y de paso sacaremos
+#a marca de clase de cada elemento de manera inversa, ya que NO tenemos los
+#datos originales asi que si asinamos el valor de la marca de clase a cada
+#elemento original podremos hacer el análisis descriptivo pero NUMERICO
+
+#Transformación de valores para "age" y obtener marca de clase
+ager1<-as.numeric(str_extract(data[["age"]],'[0-9]'))*10
+ager2<-as.numeric(str_extract(data[["age"]],'[0-9]'))*10+9
+ageMC<-((ager2)+(ager1))/2
 
 
+#Transformación de valores para "tumor_size" y obtener marca de clase
+tumorMC<-1
+i<-1
+while(i<287){
+  if(data[i,4]=="0-4"){
+    tumorMC[i]<-2
+  }
+  if(data[i,4]=="5-9"){
+    tumorMC[i]<-7
+  }
+  if(data[i,4]=="10-14"){
+    tumorMC[i]<-12
+  }
+  if(data[i,4]=="15-19"){
+    tumorMC[i]<-17
+  }
+  if(data[i,4]=="20-24"){
+    tumorMC[i]<-22
+  }
+  if(data[i,4]=="25-29"){
+    tumorMC[i]<-27
+  }
+  if(data[i,4]=="30-34"){
+    tumorMC[i]<-32
+  }
+  if(data[i,4]=="35-39"){
+    tumorMC[i]<-37
+  }
+  if(data[i,4]=="40-44"){
+    tumorMC[i]<-42
+  }
+  if(data[i,4]=="45-49"){
+    tumorMC[i]<-47
+  }
+  if(data[i,4]=="50-54"){
+    tumorMC[i]<-52
+  }
+  if(data[i,4]=="55-59"){
+    tumorMC[i]<-57
+  }
+  i <- i+1
+}
+
+#Transformación de valores para "inv_nodes" y obtener marca de clase
+nodesMC<-1
+i<-1
+while(i<287){
+  if(data[i,5]=="0-2"){
+    nodesMC[i]<-1
+  }
+  if(data[i,5]=="3-5"){
+    nodesMC[i]<-4
+  }
+  if(data[i,5]=="6-8"){
+    nodesMC[i]<-7
+  }
+  if(data[i,5]=="9-11"){
+    nodesMC[i]<-10
+  }
+  if(data[i,5]=="12-14"){
+    nodesMC[i]<-13
+  }
+  if(data[i,5]=="15-17"){
+    nodesMC[i]<-16
+  }
+  if(data[i,5]=="24-26"){
+    nodesMC[i]<-25
+  }
+  
+  i <- i+1
+}
+
+#Se proceden a crear los resúmenes para los datos numericos
+resumenAge <-data%>%summarize(meanAge = mean(ageMC),
+                              medianAge = median(ageMC),
+                              varAge = var(ageMC),
+                              sdAge = sd(ageMC),
+                              IQRAge = IQR(ageMC))
+
+resumenTumor <-data%>%summarize(meanAge = mean(tumorMC),
+                                medianAge = median(tumorMC),
+                                varAge = var(tumorMC),
+                                sdAge = sd(tumorMC),
+                                IQRAge = IQR(tumorMC))
+
+resumenNodes <-data%>%summarize(meanAge = mean(nodesMC),
+                                medianAge = median(nodesMC),
+                                varAge = var(nodesMC),
+                                sdAge = sd(nodesMC),
+                                IQRAge = IQR(nodesMC))
 
 
-
+data = cbind(data,ageMC)
 
 
 
