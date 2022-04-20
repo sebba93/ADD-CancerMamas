@@ -8,6 +8,16 @@ if (!require(tidyverse)){
   require (tidyverse)
 }
 
+if (!require(stringr)){
+  install.packages("stringr", dependencies = TRUE )
+  require (stringr)
+}
+
+if (!require(dplyr)){
+  install.packages("stringr", dependencies = TRUE )
+  require (dplyr)
+}
+
 ########################
 #                      #
 #    Carga de Datos    #
