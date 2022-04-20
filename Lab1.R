@@ -285,6 +285,8 @@ resumenNodes <-data%>%summarize(meanAge = mean(nodesMC),
 
 
 data = cbind(data,ageMC)
+data = cbind(data,tumorMC)
+data = cbind(data,nodesMC)
 
 
 
