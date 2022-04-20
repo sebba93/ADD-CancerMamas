@@ -180,7 +180,7 @@ bAgrGrado
 
 #Barra Segmentada Estandarizada
 contGradoDF <- as.data.frame(contGrado)
-bEstGrado <- ggplot(contGradoDF, aes(fill = deg_malig, y = Freq, x = irradiat))
+bEstGrado <- ggplot(contGradoDF, aes(fill = irradiat, y = Freq, x = deg_malig))
 bEstGrado <- bEstGrado + geom_bar(position = "fill", stat = "identity")
 bEstGrado <- bEstGrado + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y Radioterapia") + labs(x = "Grado")
 bEstGrado <- bEstGrado + theme_pubr()
