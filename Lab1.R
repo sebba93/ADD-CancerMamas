@@ -307,7 +307,58 @@ bEstirra
 
 
 
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
 
+#FRECUENCIA quadrante Y LA EXISTENCIA DE celular cancerigenas que atravesaron.
+
+#Tabla de Frecuencias
+contNoqu <- xtabs(~ node_caps + breast_quad, data = data)
+contNoquTot <- addmargins(contNoqu)
+contNoquTot
+#Tabla de Proporciones
+contNoquProp <- prop.table(contNoqu)
+contNoquProp <- addmargins(contNoquProp,1)
+print(contNoquProp)
+
+#Tabla de Porcentajes
+contNoquPor <- round(prop.table(contNoqu),5)*100
+contNoquPorTot <- addmargins(contNoquPor)
+contNoquPorTot
+
+
+#Tabla de Proporciones
+contNoquProp <- prop.table(contNoquPor)
+contNoquProp <- addmargins(contNoquProp,1)
+print(contNoquProp)
+
+#Gráficos de Barras
+#Barra Segmentada
+contNoquDF <- as.data.frame(contNoqu)
+bSegNoqu <- ggplot(contNoquDF, aes(fill = node_caps, y = Freq, x = breast_quad))
+bSegNoqu <- bSegNoqu + geom_bar(position = "stack", stat = "identity")
+bSegNoqu <- bSegNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Grado")
+bSegNoqu <- bSegNoqu + theme_pubr()
+bSegNoqu
+
+#Barra Agrupada
+contNoquDF <- as.data.frame(contNoqu)
+bAgrNoqu <- ggplot(contNoquDF, aes(fill = node_caps, y = Freq, x = breast_quad))
+bAgrNoqu <- bAgrNoqu + geom_bar(position = "dodge", stat = "identity")
+bAgrNoqu <- bAgrNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Grado")
+bAgrNoqu <- bAgrNoqu + theme_pubr()
+bAgrNoqu
+
+#Barra Segmentada Estandarizada
+contNoquDF <- as.data.frame(contNoqu)
+bEstNoqu <- ggplot(contNoquDF, aes(fill = node_caps, y = Freq, x = breast_quad))
+bEstNoqu <- bEstNoqu + geom_bar(position = "fill", stat = "identity")
+bEstNoqu <- bEstNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Grado")
+bEstNoqu <- bEstNoqu + theme_pubr()
+bEstNoqu
 
 
 
@@ -459,4 +510,11 @@ pruebaChirra <- chisq.test ( contirraProp )
 
 cat ("\ nResultado de la prueba :\n")
 print ( pruebaChirra )
+
+# Hacer prueba chi - cuadrado de independencia del cuadrante de la mama y si presenta celulas cancerigenas en nodos linfaticos.
+pruebaChiNoqu <- chisq.test ( contNoquProp )
+
+cat ("\ nResultado de la prueba :\n")
+print ( pruebaChiNoqu )
+
 
