@@ -208,7 +208,10 @@ bEstGrado
 contNode <- xtabs(~ node_caps + deg_malig, data = data)
 contNodeTot <- addmargins(contNode)
 contNodeTot
-
+#Tabla de Proporciones
+contNodeProp <- prop.table(contNode)
+contNodeProp <- addmargins(contNodeProp,1)
+print(contNodeProp)
 
 #Tabla de Porcentajes
 contNodePor <- round(prop.table(contNode),7)*100
@@ -246,6 +249,59 @@ bEstNode <- bEstNode + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado 
 bEstNode <- bEstNode + theme_pubr()
 bEstNode
 
+
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+
+#FRECUENCIA de radioterapia Y LA EXISTENCIA DE celular cancerigenas que atravesaron.
+
+#Tabla de Frecuencias
+contirra <- xtabs(~ irradiat + node_caps, data = data)
+contirraTot <- addmargins(contirra)
+contirraTot
+#Tabla de Proporciones
+contirraProp <- prop.table(contirra)
+contirraProp <- addmargins(contirraProp,1)
+print(contirraProp)
+
+#Tabla de Porcentajes
+contirraPor <- round(prop.table(contirra),7)*100
+contirraPorTot <- addmargins(contirraPor)
+contirraPorTot
+
+
+#Tabla de Proporciones
+contirraProp <- prop.table(contirraPor)
+contirraProp <- addmargins(contirraProp,1)
+print(contirraProp)
+
+#Gráficos de Barras
+#Barra Segmentada
+contirraDF <- as.data.frame(contirra)
+bSegirra <- ggplot(contirraDF, aes(fill = irradiat, y = Freq, x = node_caps))
+bSegirra <- bSegirra + geom_bar(position = "stack", stat = "identity")
+bSegirra <- bSegirra + labs(y = "Frecuencias") + ggtitle("Frecuencias por radioterapias y nodulos cancer") + labs(x = "Radioterapia")
+bSegirra <- bSegirra + theme_pubr()
+bSegirra
+
+#Barra Agrupada
+contirraDF <- as.data.frame(contirra)
+bAgrirra <- ggplot(contirraDF, aes(fill = irradiat, y = Freq, x = node_caps))
+bAgrirra <- bAgrirra + geom_bar(position = "dodge", stat = "identity")
+bAgrirra <- bAgrirra + labs(y = "Frecuencias") + ggtitle("Frecuencias por radioterapias y nodulos cancer") + labs(x = "Radioterapia")
+bAgrirra <- bAgrirra + theme_pubr()
+bAgrirra
+
+#Barra Segmentada Estandarizada
+contirraDF <- as.data.frame(contirra)
+bEstirra <- ggplot(contirraDF, aes(fill = irradiat, y = Freq, x = node_caps))
+bEstirra <- bEstirra + geom_bar(position = "fill", stat = "identity")
+bEstirra <- bEstirra + labs(y = "Frecuencias") + ggtitle("Frecuencias por radioterapias y nodulos cancer") + labs(x = "Radioterapia")
+bEstirra <- bEstirra + theme_pubr()
+bEstirra
 
 
 
@@ -398,4 +454,9 @@ cat ("\ nResultado de la prueba :\n")
 print ( pruebaChiNode )
 
 
+# Hacer prueba chi - cuadrado de independencia del radioterapia y si presenta celulas cancerigenas en nodos linfaticos.
+pruebaChirra <- chisq.test ( contirraProp )
+
+cat ("\ nResultado de la prueba :\n")
+print ( pruebaChirra )
 
