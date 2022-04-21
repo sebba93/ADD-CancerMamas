@@ -14,8 +14,18 @@ if (!require(stringr)){
 }
 
 if (!require(dplyr)){
-  install.packages("stringr", dependencies = TRUE )
+  install.packages("dplyr", dependencies = TRUE )
   require (dplyr)
+}
+
+if (!require(Hmisc)){
+  install.packages("Hmisc", dependencies = TRUE )
+  require (Hmisc)
+}
+
+if (!require(corrplot)){
+  install.packages("corrplot", dependencies = TRUE )
+  require (corrplot)
 }
 
 ########################
@@ -151,6 +161,29 @@ print(barraDeg)
 #------------------------------------------------------------------------#
 #------------------------------------------------------------------------#
 #------------------------------------------------------------------------#
+#Tamaño de los tumores 
+
+#Tabla de Frecuencias
+contSize <- xtabs(~tumor_size, data = data)
+contSizeTot <- marginSums(contSize)
+contSizeFinal <- addmargins(contSize,1)
+print(contSizeFinal)
+
+#Grafico de Barra
+contSizeDF<-as.data.frame(contSize)
+contSizeID   <- c(1:11)
+contSizeVal  <- c(8,4,28,30,50,54,60,19,22,3,8)
+contSizeName <- c("0-4","5-9","10-14","15-19","20-24","25-29","30-34","35-39","40-44","45-49","50-55")
+
+#Se plotea
+barplot(contSizeVal,names.arg=contSizeName,xlab="Tamaño [mm]",
+        ylab="Frecuencia",col="purple",
+        main="Frecuencias de Tamaños",border="pink")
+
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+
 
 #FRECUENCIA DEL GRADO DEL TUMOR Y LA EXISTENCIA DE RADIOTERAPIA.
 
@@ -517,4 +550,71 @@ pruebaChiNoqu <- chisq.test ( contNoquProp )
 cat ("\ nResultado de la prueba :\n")
 print ( pruebaChiNoqu )
 
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
 
+#Realizaremos una tabla de corelacción, la cual tomará una matriz en donde
+#los datos dicotómigos tomarán valores 0 1 en la variable Class, irriadat,
+#node-caps
+
+classMC<-1
+i<-1
+while(i<287){
+  if(data[i,1]=="no-recurrence-events"){
+    classMC[i]<-0
+  }
+  if(data[i,1]=="recurrence-events"){
+    classMC[i]<-1
+  }
+  i <- i+1
+}
+
+nodecapsMC<-1
+i<-1
+while(i<287){
+  if(data[i,6]=="yes"){
+    print(data[i,6])
+    nodecapsMC[i]<-1
+  }
+  if(data[i,6]=="no"){
+    nodecapsMC[i]<-0
+  }
+  if(data[i,6]=="?"){
+    nodecapsMC[i]<-0
+  }
+  i <- i+1
+}
+nodecapsMC
+
+irriadiatMC<-1
+i<-1
+while(i<287){
+  if(data[i,10]=="no"){
+    irriadiatMC[i]<-0
+  }
+  if(data[i,10]=="yes"){
+    irriadiatMC[i]<-1
+  }
+  i <- i+1
+}
+
+#Creamos la matriz y aplicamos correlacion
+matrizCorr = cbind(ageMC,tumorMC,nodesMC,nodecapsMC,irriadiatMC,classMC)
+matrixCor = round(cor(matrizCorr),2)
+matrixCor
+
+#calculamos ahora el valor P
+pMatrixCor = rcorr(as.matrix(matrizCorr))
+pMatrixCor
+
+#Graficamos los resultados
+corrplot(matrixCor, method="number", type="upper")
+
+
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+#------------------------------------------------------------------------#
+
+
+###### HACEMOS BOOTSRAP? ###########
