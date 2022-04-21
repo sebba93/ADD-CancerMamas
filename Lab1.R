@@ -83,6 +83,10 @@ contCuadPor <- round(prop.table(contCuad),7)*100
 contCuadPorTot <- addmargins(contCuadPor)
 contCuadPorTot
 
+#Tabla de Proporciones
+contCuadProp <- prop.table(contCuadPor)
+contCuadProp <- addmargins(contCuadProp,1)
+print(contCuadProp)
 
 #Gráficos de Barras
 #Barra Segmentada
@@ -162,6 +166,11 @@ contGradoPorTot <- addmargins(contGradoPor)
 contGradoPorTot
 
 
+#Tabla de Proporciones
+contGradoProp <- prop.table(contGradoPor)
+contGradoProp <- addmargins(contGradoProp,1)
+print(contGradoProp)
+
 #Gráficos de Barras
 #Barra Segmentada
 contGradoDF <- as.data.frame(contGrado)
@@ -186,6 +195,65 @@ bEstGrado <- bEstGrado + geom_bar(position = "fill", stat = "identity")
 bEstGrado <- bEstGrado + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y Radioterapia") + labs(x = "Grado")
 bEstGrado <- bEstGrado + theme_pubr()
 bEstGrado
+
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
+
+#FRECUENCIA DEL GRADO DEL TUMOR Y LA EXISTENCIA DE celular cancerigenas que atravesaron.
+
+#Tabla de Frecuencias
+contNode <- xtabs(~ node_caps + deg_malig, data = data)
+contNodeTot <- addmargins(contNode)
+contNodeTot
+
+
+#Tabla de Porcentajes
+contNodePor <- round(prop.table(contNode),7)*100
+contNodePorTot <- addmargins(contNodePor)
+contNodePorTot
+
+
+#Tabla de Proporciones
+contNodeProp <- prop.table(contNodePor)
+contNodeProp <- addmargins(contNodeProp,1)
+print(contNodeProp)
+
+#Gráficos de Barras
+#Barra Segmentada
+contNodeDF <- as.data.frame(contNode)
+bSegNode <- ggplot(contNodeDF, aes(fill = node_caps, y = Freq, x = deg_malig))
+bSegNode <- bSegNode + geom_bar(position = "stack", stat = "identity")
+bSegNode <- bSegNode + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Grado")
+bSegNode <- bSegNode + theme_pubr()
+bSegNode
+
+#Barra Agrupada
+contNodeDF <- as.data.frame(contNode)
+bAgrNode <- ggplot(contNodeDF, aes(fill = node_caps, y = Freq, x = deg_malig))
+bAgrNode <- bAgrNode + geom_bar(position = "dodge", stat = "identity")
+bAgrNode <- bAgrNode + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Grado")
+bAgrNode <- bAgrNode + theme_pubr()
+bAgrNode
+
+#Barra Segmentada Estandarizada
+contNodeDF <- as.data.frame(contNode)
+bEstNode <- ggplot(contNodeDF, aes(fill = node_caps, y = Freq, x = deg_malig))
+bEstNode <- bEstNode + geom_bar(position = "fill", stat = "identity")
+bEstNode <- bEstNode + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Grado")
+bEstNode <- bEstNode + theme_pubr()
+bEstNode
+
+
+
+
+
+
+
+
+
 
 #------------------------------------------------------------------------#
 #------------------------------------------------------------------------#
@@ -302,10 +370,32 @@ data = cbind(data,nodesMC)
 
 
 
+#------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------
+
+# Hacer prueba chi - cuadrado de independencia del grado del tumor y con si recibio radiacion .
+
+pruebaChiGrado <- chisq.test ( contGradoProp )
+
+cat ("\ nResultado de la prueba :\n")
+print ( pruebaChiGrado )
+
+#no sirven contDegProp, contEdadProp
+
+# Hacer prueba chi - cuadrado de independencia cuadrante y mama .
+pruebaChiCuad <- chisq.test ( contCuadProp )
+
+cat ("\ nResultado de la prueba :\n")
+print ( pruebaChiCuad )
 
 
+# Hacer prueba chi - cuadrado de independencia del grado del tumor y si presenta celulas cancerigenas en nodos linfaticos.
+pruebaChiNode <- chisq.test ( contNodeProp )
 
-
+cat ("\ nResultado de la prueba :\n")
+print ( pruebaChiNode )
 
 
 
