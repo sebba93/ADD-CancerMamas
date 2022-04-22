@@ -373,7 +373,7 @@ print(contNoquProp)
 contNoquDF <- as.data.frame(contNoqu)
 bSegNoqu <- ggplot(contNoquDF, aes(fill = node_caps, y = Freq, x = breast_quad))
 bSegNoqu <- bSegNoqu + geom_bar(position = "stack", stat = "identity")
-bSegNoqu <- bSegNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Cuadrante")
+bSegNoqu <- bSegNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por cuadrante y nodulos cancer") + labs(x = "Cuadrante")
 bSegNoqu <- bSegNoqu + theme_pubr()
 bSegNoqu
 
@@ -381,7 +381,7 @@ bSegNoqu
 contNoquDF <- as.data.frame(contNoqu)
 bAgrNoqu <- ggplot(contNoquDF, aes(fill = node_caps, y = Freq, x = breast_quad))
 bAgrNoqu <- bAgrNoqu + geom_bar(position = "dodge", stat = "identity")
-bAgrNoqu <- bAgrNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Cuadrante")
+bAgrNoqu <- bAgrNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por cuadrante y nodulos cancer") + labs(x = "Cuadrante")
 bAgrNoqu <- bAgrNoqu + theme_pubr()
 bAgrNoqu
 
@@ -389,7 +389,7 @@ bAgrNoqu
 contNoquDF <- as.data.frame(contNoqu)
 bEstNoqu <- ggplot(contNoquDF, aes(fill = node_caps, y = Freq, x = breast_quad))
 bEstNoqu <- bEstNoqu + geom_bar(position = "fill", stat = "identity")
-bEstNoqu <- bEstNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por Grado y nodulos cancer") + labs(x = "Cuadrante")
+bEstNoqu <- bEstNoqu + labs(y = "Frecuencias") + ggtitle("Frecuencias por cuadrante y nodulos cancer") + labs(x = "Cuadrante")
 bEstNoqu <- bEstNoqu + theme_pubr()
 bEstNoqu
 
