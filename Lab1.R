@@ -515,14 +515,6 @@ data = cbind(data,nodesMC)
 #-----------------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------------
 
-# Hacer prueba chi - cuadrado de independencia del grado del tumor y con si recibio radiacion .
-
-pruebaChiGrado <- chisq.test ( contGradoProp )
-
-cat ("\ nResultado de la prueba :\n")
-print ( pruebaChiGrado )
-
-#no sirven contDegProp, contEdadProp
 
 # Hacer prueba chi - cuadrado de independencia cuadrante y mama .
 pruebaChiCuad <- chisq.test ( contCuadProp )
@@ -531,30 +523,13 @@ cat ("\ nResultado de la prueba :\n")
 print ( pruebaChiCuad )
 
 
-# Hacer prueba chi - cuadrado de independencia del grado del tumor y si presenta celulas cancerigenas en nodos linfaticos.
-pruebaChiNode <- chisq.test ( contNodeProp )
-
-cat ("\ nResultado de la prueba :\n")
-print ( pruebaChiNode )
-
-
-# Hacer prueba chi - cuadrado de independencia del radioterapia y si presenta celulas cancerigenas en nodos linfaticos.
-pruebaChirra <- chisq.test ( contirraProp )
-
-cat ("\ nResultado de la prueba :\n")
-print ( pruebaChirra )
-
-# Hacer prueba chi - cuadrado de independencia del cuadrante de la mama y si presenta celulas cancerigenas en nodos linfaticos.
-pruebaChiNoqu <- chisq.test ( contNoquProp )
-
-cat ("\ nResultado de la prueba :\n")
-print ( pruebaChiNoqu )
 
 #------------------------------------------------------------------------#
 #------------------------------------------------------------------------#
 #------------------------------------------------------------------------#
 
-#Realizaremos una tabla de corelacción, la cual tomará una matriz en donde
+#Realizaremos una tabla de corelacción,Usamos chi cuadrado Pearson para variables 
+#continuas, y Fisher para variables dicotómicas y la cual tomará una matriz en donde
 #los datos dicotómigos tomarán valores 0 1 en la variable Class, irriadat,
 #node-caps
 
@@ -600,7 +575,7 @@ while(i<287){
 }
 
 #Creamos la matriz y aplicamos correlacion
-matrizCorr = cbind(ageMC,tumorMC,nodesMC,nodecapsMC,irriadiatMC,classMC)
+matrizCorr = cbind(ageMC,tumorMC)
 matrixCor = round(cor(matrizCorr),2)
 matrixCor
 
@@ -608,13 +583,58 @@ matrixCor
 pMatrixCor = rcorr(as.matrix(matrizCorr))
 pMatrixCor
 
-#Graficamos los resultados
-corrplot(matrixCor, method="number", type="upper")
 
 
 #------------------------------------------------------------------------#
 #------------------------------------------------------------------------#
 #------------------------------------------------------------------------#
+#Prueba de fisher
+#nodesMC,nodecapsMC,irriadiatMC,classMC
+
+fisher1 <-cbind(nodesMC,nodecapsMC)
+fisher1 <-xtabs(~.,fisher1)
+
+testFisher1 <- fisher.test(fisher1,0.95,simulate.p.value=TRUE) 
+testFisher1
+
+#--------------------------------#
+fisher2 <-cbind(nodesMC,irriadiatMC)
+fisher2 <-xtabs(~.,fisher2)
+
+testFisher2 <- fisher.test(fisher2,0.95,simulate.p.value=TRUE) 
+testFisher2
+
+#--------------------------------#
+fisher3 <-cbind(nodesMC,classMC)
+fisher3 <-xtabs(~.,fisher3)
 
 
-###### HACEMOS BOOTSRAP? ###########
+testFisher3 <- fisher.test(fisher3,0.95,simulate.p.value=TRUE) 
+testFisher3
+
+#--------------------------------#
+fisher4 <-cbind(nodecapsMC,irriadiatMC)
+fisher4 <-xtabs(~.,fisher4)
+
+
+testFisher4 <- fisher.test(fisher4,0.95,simulate.p.value=TRUE) 
+testFisher4
+
+#--------------------------------#
+fisher5 <-cbind(nodecapsMC,classMC)
+fisher5 <-xtabs(~.,fisher5)
+
+
+testFisher5 <- fisher.test(fisher5,0.95,simulate.p.value=TRUE) 
+testFisher5
+
+#--------------------------------#
+fisher6 <-cbind(irriadiatMC,classMC)
+fisher6 <-xtabs(~.,fisher6)
+
+
+testFisher6 <- fisher.test(fisher6,0.95,simulate.p.value=TRUE) 
+testFisher6
+
+##TEST ANOVA
+
